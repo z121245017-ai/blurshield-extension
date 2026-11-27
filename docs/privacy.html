@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlurShield 隐私政策 / Privacy Policy</title>
+    <link rel="icon" href="assets/icon128.png" type="image/png" />
+    <style>
+      body {
+        margin: 0;
+        background: #f8fafc;
+        color: #0f172a;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", sans-serif;
+        line-height: 1.7;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 36px auto;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 32px;
+      }
+      h1 { margin-top: 0; font-size: 24px; }
+      h2 { margin-top: 24px; font-size: 18px; }
+      p, li { color: #334155; font-size: 14px; }
+      a { color: #2563eb; text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      code {
+        background: #f1f5f9;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <p><a href="index.html">← 返回 BlurShield 首页</a></p>
+      <h1>BlurShield 隐私政策 / Privacy Policy</h1>
+      <p>生效日期：2026-11-27 · 适用版本：v1.0.0</p>
+
+      <h2>1. 零数据收集与零网络请求</h2>
+      <p>
+        BlurShield 是一款 100% 纯本地运行的 Chrome 扩展。扩展在 <code>manifest.json</code> 中严格声明
+        <code>connect-src 'none'</code>，绝不发起任何外部网络请求，也不会上传、读取、记录或出售任何网页内容、截图或个人敏感信息。
+      </p>
+
+      <h2>2. 权限使用说明</h2>
+      <ul>
+        <li><code>activeTab</code> 与 <code>scripting</code>：仅在您主动点击 BlurShield 工具栏按钮时，向当前标签页注入本地脚本以执行敏感信息模糊遮挡或还原操作。</li>
+        <li><code>storage</code>：仅在浏览器本地 <code>chrome.storage.local</code> 中保存您的打码类别开关、模糊强度滑块、点选模式偏好及赞赏提示状态。</li>
+      </ul>
+
+      <h2>3. Privacy Policy (English)</h2>
+      <p>
+        BlurShield runs 100% locally inside your browser. All regex detection, DOM blurring, placeholder masking, and restoration happen purely in memory with zero external network calls (enforced via <code>connect-src 'none'</code>). No personal data, telemetry, or page content is ever collected or transmitted.
+      </p>
+    </main>
+  </body>
+</html>

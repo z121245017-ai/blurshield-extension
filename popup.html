@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlurShield - 截图前一键打码</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="top-bar">
+        <div class="brand">
+          <img src="icons/icon48.png" alt="BlurShield" class="brand-icon" />
+          <div class="brand-text">
+            <div class="brand-title-row">
+              <span class="brand-name">BlurShield</span>
+              <span class="badge-local">100% 本地</span>
+            </div>
+            <span class="brand-sub">截图录屏前一键脱敏 · 零上传</span>
+          </div>
+        </div>
+        <button id="openCoffeeBtn" class="coffee-pill" type="button" title="支持开发者">
+          ☕ 请作者喝咖啡
+        </button>
+      </header>
+
+      <main class="content">
+        <section class="card status-card">
+          <div class="status-header">
+            <div>
+              <div id="statusBadge" class="status-badge">已隐藏 0 处敏感信息</div>
+              <div id="statusBreakdown" class="status-breakdown">勾选类别后点击下方按钮即可非破坏性打码</div>
+            </div>
+            <span id="pickIndicator" class="pick-indicator hidden">点选模式中</span>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-label">自动识别打码类别</div>
+          <div class="pill-grid">
+            <label class="cat-pill">
+              <input id="catEmail" type="checkbox" checked />
+              <span>邮箱</span>
+            </label>
+            <label class="cat-pill">
+              <input id="catPhone" type="checkbox" checked />
+              <span>手机号</span>
+            </label>
+            <label class="cat-pill">
+              <input id="catSecret" type="checkbox" checked />
+              <span>密钥与钱包</span>
+            </label>
+            <label class="cat-pill">
+              <input id="catAmount" type="checkbox" checked />
+              <span>金额数字</span>
+            </label>
+          </div>
+
+          <div class="slider-row">
+            <div class="slider-head">
+              <span class="section-label">模糊强度</span>
+              <span id="blurRadiusValue" class="slider-val">8px</span>
+            </div>
+            <input id="blurRadiusSlider" type="range" min="6" max="16" step="1" value="8" />
+          </div>
+        </section>
+
+        <section class="actions-area">
+          <button id="autoBlurBtn" class="btn-primary" type="button">
+            一键打码页面敏感信息
+          </button>
+
+          <div class="card pick-card">
+            <div class="pick-mode-tabs" role="radiogroup" aria-label="手动点选方式">
+              <button id="modeBlurBtn" class="mode-tab active" type="button" data-mode="blur">
+                点选模糊
+              </button>
+              <button id="modePlaceholderBtn" class="mode-tab" type="button" data-mode="placeholder">
+                替换金额占位符 (¥*,***.**)
+              </button>
+            </div>
+            <button id="pickModeBtn" class="btn-outline" type="button">
+              手动点选模糊/替换金额
+            </button>
+          </div>
+
+          <div class="secondary-row">
+            <button id="undoBtn" class="btn-secondary" type="button" disabled>
+              撤销上一步
+            </button>
+            <button id="restoreAllBtn" class="btn-danger-outline" type="button" disabled>
+              一键全部还原
+            </button>
+          </div>
+        </section>
+
+        <div id="toastBar" class="toast-bar hidden" role="status" aria-live="polite"></div>
+      </main>
+
+      <footer class="footer-bar">
+        <span>100% 纯本地运行 · connect-src 'none'</span>
+        <button id="footerCoffeeLink" class="footer-link" type="button">☕ 打赏支持</button>
+      </footer>
+    </div>
+
+    <div id="coffeeModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="coffeeModalTitle">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h2 id="coffeeModalTitle" class="modal-title">☕ 请作者喝杯咖啡</h2>
+          <button id="closeCoffeeModalBtn" class="modal-close" type="button" aria-label="关闭">×</button>
+        </div>
+        <p class="modal-desc">
+          BlurShield 永久免费、100% 纯本地脱敏、绝不上传网页截图或敏感信息。如果帮你省下了打码时间，欢迎扫码支持！
+        </p>
+        <div class="qr-frame">
+          <img src="assets/wechat-coffee-light.png" alt="微信赞赏二维码" class="qr-image" />
+        </div>
+        <div class="modal-actions">
+          <button id="coffeeDonatedBtn" class="btn-primary modal-btn" type="button">我已打赏</button>
+          <button id="coffeeLaterBtn" class="btn-secondary modal-btn" type="button">以后再说</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

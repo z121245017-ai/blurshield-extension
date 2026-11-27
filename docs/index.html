@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BlurShield — 截图录屏前一键局部打码网页敏感信息</title>
+    <link rel="icon" href="assets/icon128.png" type="image/png" />
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --text: #0f172a;
+        --muted: #475569;
+        --primary: #2563eb;
+        --primary-hover: #1d4ed8;
+        --soft: #eff6ff;
+        --success: #0f766e;
+        --success-bg: #f0fdfa;
+        --danger: #dc2626;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+      .wrap {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .brand img {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 18px;
+        font-size: 14px;
+      }
+      .nav-links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 500;
+      }
+      .nav-links a:hover { color: var(--primary); }
+      .hero {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 32px;
+        margin-bottom: 24px;
+      }
+      .pill {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: var(--soft);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+      h1 {
+        margin: 0 0 12px;
+        font-size: 32px;
+        line-height: 1.25;
+      }
+      .lead {
+        margin: 0 0 22px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        border: 1px solid transparent;
+      }
+      .btn-primary {
+        background: var(--primary);
+        color: #ffffff;
+      }
+      .btn-primary:hover { background: var(--primary-hover); }
+      .btn-outline {
+        background: #ffffff;
+        color: var(--text);
+        border-color: var(--border);
+      }
+      .btn-outline:hover { background: #f1f5f9; }
+      .btn-outline.active {
+        border-color: #fca5a5;
+        background: #fef2f2;
+        color: var(--danger);
+      }
+      .btn-danger {
+        background: #ffffff;
+        color: var(--danger);
+        border-color: #fecaca;
+      }
+      .btn-danger:hover { background: #fef2f2; }
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .demo-section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .demo-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .status-pill {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 999px;
+        background: var(--success-bg);
+        color: var(--success);
+        border: 1px solid #99f6e4;
+      }
+      .demo-controls {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        padding: 12px;
+        background: #f8fafc;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+      }
+      .cat-check {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .sandbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 14px;
+      }
+      .sandbox-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        background: #fcfdff;
+      }
+      .sandbox-card h4 {
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+      .kv {
+        font-size: 13px;
+        margin: 6px 0;
+        color: #334155;
+        word-break: break-all;
+      }
+      .kv strong { color: var(--text); }
+      .coffee-box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background: #ffffff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .coffee-qr {
+        width: 180px;
+        height: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+      }
+      footer {
+        margin-top: 32px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      footer a { color: var(--primary); text-decoration: none; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <nav class="nav">
+        <div class="brand">
+          <img src="assets/icon128.png" alt="BlurShield" />
+          <span>BlurShield v1.0.0</span>
+        </div>
+        <div class="nav-links">
+          <a href="#sandbox">在线体验</a>
+          <a href="#coffee">☕ 请喝咖啡</a>
+          <a href="privacy.html">隐私政策</a>
+          <a href="https://github.com/z121245017-ai/blurshield-extension" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <span class="pill">100% 纯本地运行 · connect-src 'none' · 零截图上传风险</span>
+        <h1>截图与录屏前，一键局部模糊或替换网页敏感信息</h1>
+        <p class="lead">
+          告别截图后还得打开修图软件涂抹、告别把含客户邮箱或密钥的整页截图上传到第三方在线工具。BlurShield 在浏览器本地非破坏性打码邮箱、手机号、API 密钥、0x 钱包、银行卡与金额，并支持点击「一键全部还原」无损恢复原貌。
+        </p>
+        <div class="cta-row">
+          <a
+            class="btn btn-primary"
+            href="https://github.com/z121245017-ai/blurshield-extension/releases/download/v1.0.0/blurshield-extension-v1.0.0.zip"
+          >
+            下载扩展包 v1.0.0 (.zip)
+          </a>
+          <a class="btn btn-outline" href="#sandbox">在下方模拟控制台实时体验</a>
+        </div>
+      </section>
+
+      <section class="grid-3">
+        <div class="card">
+          <h3>⚡ 一键智能正则识别</h3>
+          <p>自动识别邮箱、中国 11 位手机号与国际号码、API 密钥（sk- / ghp_ / AKIA）、EVM 0x 地址、银行卡/身份证与金额，不误伤普通日期。</p>
+        </div>
+        <div class="card">
+          <h3>🎯 点选模糊 / 占位符替换</h3>
+          <p>遇到任意定制图表或订单卡片，开启手动点选即可直接模糊，或一键替换为 <code>¥*,***.**</code> / <code>$*,***.**</code> 安全占位符。</p>
+        </div>
+        <div class="card">
+          <h3>🛡️ 纯本地零上传</h3>
+          <p>严格配置 <code>connect-src 'none'</code>，无需注册登录、无收费墙，在任何内部后台或金融看板都能安心截图录屏。</p>
+        </div>
+      </section>
+
+      <section id="sandbox" class="demo-section">
+        <div class="demo-head">
+          <div>
+            <h2 style="margin:0 0 4px;font-size:20px;">在线沙盒体验（模拟 SaaS 账单与开发者控制台）</h2>
+            <div style="font-size:13px;color:var(--muted);">下方数据均为演示用虚假样本，所有打码与还原均在当前页面本地 DOM 实时运行。</div>
+          </div>
+          <span id="sandboxStatus" class="status-pill">已隐藏 0 处敏感信息</span>
+        </div>
+
+        <div class="demo-controls" data-blurshield-ui="1">
+          <label class="cat-check"><input id="sbEmail" type="checkbox" checked /> 邮箱</label>
+          <label class="cat-check"><input id="sbPhone" type="checkbox" checked /> 手机号</label>
+          <label class="cat-check"><input id="sbSecret" type="checkbox" checked /> 密钥与钱包</label>
+          <label class="cat-check"><input id="sbAmount" type="checkbox" checked /> 金额数字</label>
+          <label class="cat-check">
+            模糊强度
+            <input id="sbRadius" type="range" min="6" max="16" value="8" />
+            <span id="sbRadiusLabel">8px</span>
+          </label>
+          <button id="sbAutoBlurBtn" class="btn btn-primary" type="button">一键打码下方沙盒</button>
+          <button id="sbPickBlurBtn" class="btn btn-outline" type="button">点选区域模糊</button>
+          <button id="sbPickPlaceholderBtn" class="btn btn-outline" type="button">点选替换 ¥*,***.**</button>
+          <button id="sbRestoreBtn" class="btn btn-danger" type="button">一键全部还原</button>
+        </div>
+
+        <div id="sandboxRoot" class="sandbox-grid">
+          <div class="sandbox-card">
+            <h4>SaaS 营收与财务概览</h4>
+            <div class="kv"><strong>本月净营收：</strong><span id="sbRevenue">¥128,450.00</span></div>
+            <div class="kv"><strong>美元订阅 MRR：</strong><span>$48,920.50</span></div>
+            <div class="kv"><strong>结算银行卡：</strong><span>6222 0202 0012 3456</span></div>
+            <div class="kv"><strong>统计周期：</strong><span>2026-11-01 至 2026-11-27（普通日期不会被误打码）</span></div>
+          </div>
+
+          <div class="sandbox-card">
+            <h4>API 密钥与链上收款配置</h4>
+            <div class="kv"><strong>GitHub Token：</strong><span>ghp_9xK2mPqR7vL4wZ8nB3cT5yH6jD1fS</span></div>
+            <div class="kv"><strong>OpenAI Key：</strong><span>sk-proj-abc123def456ghi789jkl012mno</span></div>
+            <div class="kv"><strong>AWS Access Key：</strong><span>AKIAIOSFODNN7EXAMPLE</span></div>
+            <div class="kv"><strong>EVM 收款地址：</strong><span>0x71C7656EC7ab88b098defB751B7401B5f6d8976F</span></div>
+          </div>
+
+          <div class="sandbox-card">
+            <h4>核心客户联系人明细</h4>
+            <div class="kv"><strong>VIP 客户邮箱：</strong><span>zhangwei@acme-saas.cn</span></div>
+            <div class="kv"><strong>财务对账邮箱：</strong><span>billing@global-cloud.io</span></div>
+            <div class="kv"><strong>中国手机号：</strong><span>13800138899</span></div>
+            <div class="kv"><strong>海外联系电话：</strong><span>+1-415-555-0199</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="coffee" class="coffee-box">
+        <div style="max-width:620px;">
+          <h2 style="margin:0 0 8px;font-size:20px;">☕ 免费开源 · 请作者喝杯咖啡</h2>
+          <p style="margin:0;color:var(--muted);font-size:14px;">
+            BlurShield 永久免费、无任何收费墙或隐私上传。如果它在你做产品演示、汇报截图或录屏教学时保护了敏感数据，欢迎微信扫码支持作者持续维护！
+          </p>
+        </div>
+        <img class="coffee-qr" src="assets/wechat-coffee-light.png" alt="微信赞赏二维码" />
+      </section>
+
+      <footer>
+        BlurShield v1.0.0 · 100% Local-First Chrome Extension ·
+        <a href="privacy.html">Privacy Policy</a> ·
+        <a href="https://github.com/z121245017-ai/blurshield-extension" target="_blank" rel="noopener">GitHub Repository</a>
+      </footer>
+    </div>
+
+    <script src="assets/sensitive_patterns.js"></script>
+    <script src="assets/content.js"></script>
+    <script>
+      (function () {
+        var api = window.__blurShieldApi;
+        var sandboxRoot = document.getElementById('sandboxRoot');
+        var statusEl = document.getElementById('sandboxStatus');
+        var radiusSlider = document.getElementById('sbRadius');
+        var radiusLabel = document.getElementById('sbRadiusLabel');
+        var pickBlurBtn = document.getElementById('sbPickBlurBtn');
+        var pickPlaceholderBtn = document.getElementById('sbPickPlaceholderBtn');
+
+        function getCats() {
+          return {
+            email: document.getElementById('sbEmail').checked,
+            phone: document.getElementById('sbPhone').checked,
+            secret: document.getElementById('sbSecret').checked,
+            amount: document.getElementById('sbAmount').checked
+          };
+        }
+
+        function updateStatus(summary) {
+          var s = summary || api.getSummary();
+          statusEl.textContent = '已隐藏 ' + (s.totalCount || 0) + ' 处敏感信息';
+          pickBlurBtn.classList.toggle('active', s.pickActive && s.pickMode === 'blur');
+          pickPlaceholderBtn.classList.toggle('active', s.pickActive && s.pickMode === 'placeholder');
+        }
+
+        document.getElementById('sbAutoBlurBtn').addEventListener('click', function () {
+          var s = api.autoBlurDocument({
+            root: sandboxRoot,
+            categories: getCats(),
+            blurRadius: Number(radiusSlider.value) || 8
+          });
+          updateStatus(s);
+        });
+
+        radiusSlider.addEventListener('input', function () {
+          var val = Number(radiusSlider.value) || 8;
+          radiusLabel.textContent = val + 'px';
+          updateStatus(api.setBlurRadius(val));
+        });
+
+        pickBlurBtn.addEventListener('click', function () {
+          var cur = api.getSummary();
+          var nextActive = !(cur.pickActive && cur.pickMode === 'blur');
+          updateStatus(api.setPickMode(nextActive, 'blur'));
+        });
+
+        pickPlaceholderBtn.addEventListener('click', function () {
+          var cur = api.getSummary();
+          var nextActive = !(cur.pickActive && cur.pickMode === 'placeholder');
+          updateStatus(api.setPickMode(nextActive, 'placeholder'));
+        });
+
+        document.getElementById('sbRestoreBtn').addEventListener('click', function () {
+          updateStatus(api.restoreAll(sandboxRoot));
+        });
+
+        document.addEventListener('click', function () {
+          setTimeout(function () { updateStatus(); }, 30);
+        });
+      })();
+    </script>
+  </body>
+</html>
